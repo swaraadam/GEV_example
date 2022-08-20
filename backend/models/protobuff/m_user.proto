@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package m_user;
+option go_package = "./models/protobuff";
+
+message User {
+    string user_id = 1;
+    string google_id = 3;
+    string facebook_id = 4;
+    string apple_id = 5;
+    string authorization = 6;
+    bool access_allowed = 7;
+    string access_reason = 8;
+    bool verified = 9;
+}
+
+message RegisterRequest{
+    string email = 1;
+    string name = 2;
+    string password = 3;
+}
+
+message LoginRequest{
+    string email = 1;
+    string password = 2;
+}
+
+message RegisterResponse{
+    string access_token = 1;
+    int64 token_duration = 2;
+}
+
+message LoginResponse {
+    enum LOGIN_STATUS {
+        UNAUTHENTICATED = 0;
+        AUTHENTICATED = 1;
+    }
+    LOGIN_STATUS status = 1;
+    string message = 2;
+    string access_token = 3;
+    User user = 4;
+}
+
+service UserService{
+    rpc Register (RegisterRequest) returns (RegisterResponse);
+    rpc Login (LoginRequest) returns (LoginResponse);
+}
